@@ -14,11 +14,14 @@ Tutorial Framework (for Ogre 1.9)
 http://www.ogre3d.org/wiki/
 -----------------------------------------------------------------------------
 */
-
+#include <iostream>
 #include "TutorialApplication.h"
 #include "Ball.h"
+#include "Simulator.h"
+#include "GameObject.h"
 
 Ball* ball;
+Simulator* sim;
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -51,13 +54,16 @@ void TutorialApplication::createScene(void)
     spotLight->setPosition(50, 50, 50);
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
   
+  /*
     PlayingField* bCourt = new PlayingField(mSceneMgr);
     ball = new Ball(mSceneMgr);
     bCourt->addChild(ball->getNode());
     ball->setPlayingField(bCourt);
+*/
 
-    //mCamera->setPosition(Ogre::Vector3(0.0f, 0.0f, 0.4f * bCourt->getLength()));
-    //mCamera->lookAt(Ogre::Vector3(0, 0, 0));
+    sim = new Simulator();
+    GameObject* obj = new GameObject(mSceneMgr, sim);
+    std::cout << "end of createScene" << std::endl;
 }
 //---------------------------------------------------------------------------
 void TutorialApplication::createCamera(void)
@@ -78,14 +84,20 @@ void TutorialApplication::createViewports(void)
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
     if(mWindow->isClosed())
-	return false;
+	   return false;
     if(mShutDown)
-	return false;
+	   return false;
 
     mKeyboard->capture();
     mMouse->capture();
 
-    ball->move(evt);
+    std::cout << "before step sim" << std::endl;
+    if(sim)
+    {
+        std::cout << "sim not null" << std::endl;
+        sim->stepSimulation(evt.timeSinceLastFrame);
+    }
+    std::cout << "after step sim" << std::endl;
 
     return true;
 }
