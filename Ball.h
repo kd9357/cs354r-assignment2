@@ -1,7 +1,7 @@
 #include <Ogre.h>
 #include "PlayingField.h"
 
-class Ball
+class Ball : public GameObject
 {
 	protected:
 		Ogre::SceneNode* rootNode;
@@ -10,7 +10,7 @@ class Ball
 		Ogre::Real bSpeed;
 		PlayingField* grounds;
 	public:
-		Ball(Ogre::SceneManager* scnMgr);
+		Ball(Ogre::SceneManager* scnMgr, Simulator* sim);
 		~Ball();
 		void move(const Ogre::FrameEvent& evt);
 		Ogre::SceneNode* getNode() { return rootNode; }

@@ -36,4 +36,8 @@ class OgreMotionState : public btMotionState
 			btVector3 pos = worldTrans.getOrigin();
 			mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
 		}
+
+		void updateTransform(btTransform& newpos){
+			mPos1 = newpos;
+		}
 };

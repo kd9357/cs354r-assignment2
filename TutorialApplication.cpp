@@ -54,15 +54,26 @@ void TutorialApplication::createScene(void)
     spotLight->setPosition(50, 50, 50);
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
   
-  /*
-    PlayingField* bCourt = new PlayingField(mSceneMgr);
-    ball = new Ball(mSceneMgr);
-    bCourt->addChild(ball->getNode());
-    ball->setPlayingField(bCourt);
-*/
+    // Creating reusable plane entity to create walls of the room
+    // Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+    // Ogre::MeshManager::getSingleton().createPlane("plane", 
+    //     Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 
+    //     50, 50, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
+    // Ogre::Entity* planeEntity = mSceneMgr->createEntity("plane");
+    // planeEntity->setCastShadows(false);
+    // planeEntity->setMaterialName("Examples/Rockwall");
+    // Ogre::SceneNode* floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    // floorNode->attachObject(planeEntity);
 
     sim = new Simulator();
-    GameObject* obj = new GameObject(mSceneMgr, sim);
+    PlayingField* field = new PlayingField(mSceneMgr, sim);
+    ball = new Ball(mSceneMgr, sim);
+    field->addChild(ball->getNode());
+    // std::cout << "before simulator" << std::endl;
+    // field->addToSimulator();
+    // ball->addToSimulator();
+    // std::cout << "after simulator" << std::endl;
+
     std::cout << "end of createScene" << std::endl;
 }
 //---------------------------------------------------------------------------
@@ -92,11 +103,24 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     mMouse->capture();
 
     std::cout << "before step sim" << std::endl;
+    /*
     if(sim)
     {
         std::cout << "sim not null" << std::endl;
         sim->stepSimulation(evt.timeSinceLastFrame);
-    }
+        std::deque<GameObject*> objs = sim->getGameObjects();
+        for (GameObject* obj : objs){
+            if(obj == NULL)
+                std::cout << "obj is null" << std::endl;
+            btTransform trans;
+            btRigidBody* body = obj->getBody();
+            body->getMotionState()->getWorldTransform(trans);
+            //btQuaternion orientation = trans.getRotation();
+            Ogre::SceneNode* sceneNode = obj->getRootNode();
+            sceneNode->setPosition(Ogre::Vector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+            sceneNode->setOrientation(Ogre::Quaternion(orientation.getW(), orientation.getX(), orientation.getY(), orientation.getZ()));
+        }
+    }*/
     std::cout << "after step sim" << std::endl;
 
     return true;

@@ -27,6 +27,7 @@ class Simulator
 								const Ogre::Real fixedTimestep = 1.0f/60.0f);
 		btAlignedObjectArray<btCollisionShape*> getCollisionShapes(void);
 		btDiscreteDynamicsWorld* getDynamicsWorld(void);
+		std::deque<GameObject*> getGameObjects(void){return objList;}
 };
 
 #endif

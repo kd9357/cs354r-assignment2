@@ -25,6 +25,10 @@ class GameObject
 
 	public:
 		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim);
+		btRigidBody* getBody(){return body;}
+		Ogre::SceneNode* getRootNode(){return rootNode;}
+		void updateTransform();
+		void addToSimulator();
 };
 
 #endif

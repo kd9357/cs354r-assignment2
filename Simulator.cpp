@@ -17,6 +17,7 @@ Simulator::Simulator()
 void Simulator::addObject(GameObject* o)
 {
 	objList.push_back(o);
+	dynamicsWorld->addRigidBody(o->getBody());
 }
 
 btAlignedObjectArray<btCollisionShape*> Simulator::getCollisionShapes()
@@ -31,7 +32,7 @@ btDiscreteDynamicsWorld* Simulator::getDynamicsWorld()
 
 void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps, const Ogre::Real fixedTimestep)
 {
-	getDynamicsWorld()->stepSimulation(1.0f/60.0f);
+	getDynamicsWorld()->stepSimulation(elapsedTime, maxSubSteps, fixedTimestep);
 	//int count = objList.size();
 	// for(int i = 0; i < count; ++i)
 	// {

@@ -2,7 +2,7 @@
 #include <OgreSceneManager.h>
 #include "PlayingField.h"
 
-PlayingField::PlayingField(Ogre::SceneManager* scnMgr)
+PlayingField::PlayingField(Ogre::SceneManager* scnMgr, Simulator* sim) : GameObject(scnMgr, sim)
 {
 	rootNode = scnMgr->getRootSceneNode()->createChildSceneNode();
 
