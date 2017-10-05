@@ -33,6 +33,7 @@ protected:
     virtual void createCamera(void);
     virtual void createViewports(void);
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    virtual bool processUnbufferedInput(const Ogre::FrameEvent& fe);
 };
 
 //---------------------------------------------------------------------------

@@ -68,11 +68,9 @@ void TutorialApplication::createScene(void)
     sim = new Simulator();
     PlayingField* field = new PlayingField(mSceneMgr, sim);
     ball = new Ball(mSceneMgr, sim);
-    field->addChild(ball->getNode());
-    // std::cout << "before simulator" << std::endl;
-    // field->addToSimulator();
-    // ball->addToSimulator();
-    // std::cout << "after simulator" << std::endl;
+    ball->getNode()->setPosition(0, 20, 0);
+    ball->addToSimulator();
+    field->addToSimulator();
 
     std::cout << "end of createScene" << std::endl;
 }
@@ -80,7 +78,7 @@ void TutorialApplication::createScene(void)
 void TutorialApplication::createCamera(void)
 {
     mCamera = mSceneMgr->createCamera("PlayerCam");
-    mCamera->setPosition(Ogre::Vector3(0, 25, 80));
+    mCamera->setPosition(Ogre::Vector3(0, 25, 150));
     mCamera->lookAt(Ogre::Vector3(0, 25, 0));
     mCamera->setNearClipDistance(5);
 }
@@ -90,6 +88,32 @@ void TutorialApplication::createViewports(void)
     Ogre::Viewport* vp = mWindow->addViewport(mCamera);
     vp->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
     mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+}
+
+bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
+{
+    static Ogre::Real rotate = 0.01;
+    static Ogre::Real move = 0.1;
+
+    //Camera controls
+    Ogre::Vector3 dirVec = mCamera->getPosition();
+    if(mKeyboard->isKeyDown(OIS::KC_W))
+    {
+        std::cout << "w pressed" << std::endl;
+        dirVec.y += move;
+    }
+    if(mKeyboard->isKeyDown(OIS::KC_S))
+        dirVec.y -= move;
+    if(mKeyboard->isKeyDown(OIS::KC_Q))
+         mCamera->yaw(Ogre::Degree(rotate));
+    if(mKeyboard->isKeyDown(OIS::KC_E))
+         mCamera->yaw(Ogre::Degree(-rotate));
+    if(mKeyboard->isKeyDown(OIS::KC_A))
+        dirVec.x -= move;
+    if(mKeyboard->isKeyDown(OIS::KC_D))
+        dirVec.x += move;
+    mCamera->setPosition(dirVec);
+    return true;
 }
 //---------------------------------------------------------------------------
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -102,26 +126,13 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     mKeyboard->capture();
     mMouse->capture();
 
-    std::cout << "before step sim" << std::endl;
-    /*
     if(sim)
     {
-        std::cout << "sim not null" << std::endl;
         sim->stepSimulation(evt.timeSinceLastFrame);
-        std::deque<GameObject*> objs = sim->getGameObjects();
-        for (GameObject* obj : objs){
-            if(obj == NULL)
-                std::cout << "obj is null" << std::endl;
-            btTransform trans;
-            btRigidBody* body = obj->getBody();
-            body->getMotionState()->getWorldTransform(trans);
-            //btQuaternion orientation = trans.getRotation();
-            Ogre::SceneNode* sceneNode = obj->getRootNode();
-            sceneNode->setPosition(Ogre::Vector3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
-            sceneNode->setOrientation(Ogre::Quaternion(orientation.getW(), orientation.getX(), orientation.getY(), orientation.getZ()));
-        }
-    }*/
-    std::cout << "after step sim" << std::endl;
+    }
+
+    if(!processUnbufferedInput(evt))
+        return false;
 
     return true;
 }

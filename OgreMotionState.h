@@ -30,7 +30,6 @@ class OgreMotionState : public btMotionState
 		{
 			if(mVisibleobj == NULL)
 				return;
-
 			btQuaternion rot = worldTrans.getRotation();
 			mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
 			btVector3 pos = worldTrans.getOrigin();

@@ -22,6 +22,8 @@ class GameObject
 		btTransform tr;
 		btVector3 inertia;
 		OgreMotionState* motionState;
+		Ogre::Real restitution;
+		Ogre::Real friction;
 
 	public:
 		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim);
