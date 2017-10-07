@@ -19,6 +19,11 @@ http://www.ogre3d.org/wiki/
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
+#include "Simulator.h"
+#include "PlayingField.h"
+#include "Ball.h"
+#include "Paddle.h"
+
 
 //---------------------------------------------------------------------------
 
@@ -32,8 +37,23 @@ protected:
     virtual void createScene(void);
     virtual void createCamera(void);
     virtual void createViewports(void);
-    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    // OIS::MouseListener
+    virtual bool mouseMoved(const OIS::MouseEvent& me);
+    // Ogre::KeyListener
     virtual bool processUnbufferedInput(const Ogre::FrameEvent& fe);
+    // Ogre::FrameListener
+    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+
+    //Simulator and Game objects
+    Simulator * sim;
+    PlayingField * field;
+    Ball * ball;
+    Paddle * paddle;
+    //Camera Parameters
+    Ogre::SceneNode * mCamNode;
+    Ogre::Vector3 mDirection;
+    Ogre::Real mMove;
+    Ogre::Real mRotate;
 };
 
 //---------------------------------------------------------------------------

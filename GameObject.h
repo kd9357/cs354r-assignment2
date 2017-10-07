@@ -31,6 +31,7 @@ class GameObject
 		Ogre::SceneNode* getRootNode(){return rootNode;}
 		void updateTransform();
 		void addToSimulator();
+		void setVelocity(Ogre::Real x, Ogre::Real y, Ogre::Real z);
 };
 
 #endif

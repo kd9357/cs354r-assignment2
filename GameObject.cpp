@@ -1,5 +1,5 @@
-#include <OgreEntity.h>
-#include <OgreSceneManager.h>
+// #include <OgreEntity.h>
+// #include <OgreSceneManager.h>
 #include "GameObject.h"
 #include "Simulator.h"
 #include <iostream>
@@ -8,11 +8,10 @@ GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim)
 {
 	scnMgr = scnMgr;
 	simulator = sim;
-	//shape = new btBoxShape(btVector3(1.0f, 1.0f, 1.0f));
 	shape = NULL;
 	motionState = NULL;
-	mass = 0.0f;
-	restitution = 1.0;
+	mass = 0;
+	restitution = 1;
 	friction = 0;
 	inertia.setZero();
 	tr.setIdentity();
@@ -36,4 +35,8 @@ void GameObject::addToSimulator(){
 	body->setRestitution(restitution);
 	body->setFriction(friction);
 	simulator->addObject(this);
+}
+
+void GameObject::setVelocity(Ogre::Real x, Ogre::Real y, Ogre::Real z) {
+	body->setLinearVelocity(btVector3(x, y, z));
 }

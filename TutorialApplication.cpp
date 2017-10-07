@@ -16,12 +16,10 @@ http://www.ogre3d.org/wiki/
 */
 #include <iostream>
 #include "TutorialApplication.h"
-#include "Ball.h"
-#include "Simulator.h"
-#include "GameObject.h"
 
-Ball* ball;
-Simulator* sim;
+
+// Ball* ball;
+// Simulator* sim;
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -40,6 +38,7 @@ void TutorialApplication::createScene(void)
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
     mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox", 5000, false);
 
+    // Lights setup
     Ogre::Light* pointLight = mSceneMgr->createLight("PointLight");
     pointLight->setType(Ogre::Light::LT_POINT);
     pointLight->setDiffuseColour(1.0, 1.0, 1.0);
@@ -54,33 +53,33 @@ void TutorialApplication::createScene(void)
     spotLight->setPosition(50, 50, 50);
     spotLight->setSpotlightRange(Ogre::Degree(35), Ogre::Degree(50));
   
-    // Creating reusable plane entity to create walls of the room
-    // Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-    // Ogre::MeshManager::getSingleton().createPlane("plane", 
-    //     Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 
-    //     50, 50, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
-    // Ogre::Entity* planeEntity = mSceneMgr->createEntity("plane");
-    // planeEntity->setCastShadows(false);
-    // planeEntity->setMaterialName("Examples/Rockwall");
-    // Ogre::SceneNode* floorNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    // floorNode->attachObject(planeEntity);
-
+    //Physics setup
     sim = new Simulator();
-    PlayingField* field = new PlayingField(mSceneMgr, sim);
-    ball = new Ball(mSceneMgr, sim);
-    ball->getNode()->setPosition(0, 20, 0);
-    ball->addToSimulator();
+    
+    field = new PlayingField(mSceneMgr, sim, 100, 100);
     field->addToSimulator();
 
-    std::cout << "end of createScene" << std::endl;
+    ball = new Ball(mSceneMgr, sim);
+    ball->getRootNode()->setPosition(0, 50, 0);
+    ball->addToSimulator();
+    ball->setVelocity(0, 0, 50);
+
+    //For now, it's positioning will match that of the camera
+    paddle = new Paddle(mSceneMgr, sim, 25, 25);
+    paddle->getRootNode()->setPosition(20, 25, 50);
+    paddle->addToSimulator();
 }
 //---------------------------------------------------------------------------
 void TutorialApplication::createCamera(void)
 {
     mCamera = mSceneMgr->createCamera("PlayerCam");
-    mCamera->setPosition(Ogre::Vector3(0, 25, 150));
-    mCamera->lookAt(Ogre::Vector3(0, 25, 0));
+    // mCamera->lookAt(Ogre::Vector3(0, 25, 0));
     mCamera->setNearClipDistance(5);
+    mCamNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("CamNode");
+    mCamNode->setPosition(Ogre::Vector3(0, 25, 150));
+    mCamNode->attachObject(mCamera);
+    mMove = 0.1;
+    mRotate = 0.05;
 }
 //---------------------------------------------------------------------------
 void TutorialApplication::createViewports(void)
@@ -90,29 +89,42 @@ void TutorialApplication::createViewports(void)
     mCamera->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
 }
 
+//---------------------------------------------------------------------------
+//Keyboard input
 bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
 {
-    static Ogre::Real rotate = 0.01;
-    static Ogre::Real move = 0.1;
-
     //Camera controls
+    //For now, also move paddle
     Ogre::Vector3 dirVec = mCamera->getPosition();
     if(mKeyboard->isKeyDown(OIS::KC_W))
-    {
-        std::cout << "w pressed" << std::endl;
-        dirVec.y += move;
-    }
+        dirVec.y += mMove;
     if(mKeyboard->isKeyDown(OIS::KC_S))
-        dirVec.y -= move;
-    if(mKeyboard->isKeyDown(OIS::KC_Q))
-         mCamera->yaw(Ogre::Degree(rotate));
-    if(mKeyboard->isKeyDown(OIS::KC_E))
-         mCamera->yaw(Ogre::Degree(-rotate));
+        dirVec.y -= mMove;
     if(mKeyboard->isKeyDown(OIS::KC_A))
-        dirVec.x -= move;
+        dirVec.x -= mMove;
     if(mKeyboard->isKeyDown(OIS::KC_D))
-        dirVec.x += move;
-    mCamera->setPosition(dirVec);
+        dirVec.x += mMove;
+    if(mKeyboard->isKeyDown(OIS::KC_Q))
+    {
+        mCamNode->yaw(Ogre::Degree(mRotate), Ogre::Node::TS_WORLD);
+        paddle->getRootNode()->yaw(Ogre::Degree(mRotate), Ogre::Node::TS_WORLD);
+    }
+    if(mKeyboard->isKeyDown(OIS::KC_E))
+    {
+        mCamNode->yaw(Ogre::Degree(-mRotate), Ogre::Node::TS_WORLD);
+        paddle->getRootNode()->yaw(Ogre::Degree(-mRotate), Ogre::Node::TS_WORLD);
+    }
+    mCamNode->translate(dirVec, Ogre::Node::TS_LOCAL);
+    paddle->getRootNode()->translate(dirVec, Ogre::Node::TS_LOCAL);
+    return true;
+}
+
+//---------------------------------------------------------------------------
+//Mouse movement listener (implement later)
+bool TutorialApplication::mouseMoved(const OIS::MouseEvent& me) {
+    //How do we translate mouse coordinates to object/world coordinates?
+    // if(me.state.X.rel > 0)
+    //     std::cout << "xrel positive\n";
     return true;
 }
 //---------------------------------------------------------------------------
