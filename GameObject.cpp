@@ -24,6 +24,7 @@ void GameObject::updateTransform(){
 	tr.setRotation(btQuaternion(qt.x, qt.y, qt.z, qt.w));
 
 	if (motionState) motionState -> updateTransform(tr);
+	if (body) body->setWorldTransform(tr);
 }
 
 void GameObject::addToSimulator(){

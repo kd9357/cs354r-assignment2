@@ -39,6 +39,8 @@ protected:
     virtual void createViewports(void);
     // OIS::MouseListener
     virtual bool mouseMoved(const OIS::MouseEvent& me);
+    virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
+    virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
     // Ogre::KeyListener
     virtual bool processUnbufferedInput(const Ogre::FrameEvent& fe);
     // Ogre::FrameListener
@@ -47,6 +49,7 @@ protected:
     //Simulator and Game objects
     Simulator * sim;
     PlayingField * field;
+    PlayingField * wall;
     Ball * ball;
     Paddle * paddle;
     //Camera Parameters

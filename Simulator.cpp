@@ -11,7 +11,6 @@ Simulator::Simulator()
 												overlappingPairCache,
 												solver,
 												collisionConfiguration);
-  // dynamicsWorld->setGravity(btVector3(0.0, -9.8, 0.0));
   dynamicsWorld->setGravity(btVector3(0.0, -300, 0.0));
 }
 

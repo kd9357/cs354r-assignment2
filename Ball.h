@@ -12,4 +12,5 @@ class Ball : public GameObject
 		Ball(Ogre::SceneManager* scnMgr, Simulator* sim);
 		~Ball();
 		// Ogre::SceneNode* getNode() { return rootNode; }
+    void reset();
 };

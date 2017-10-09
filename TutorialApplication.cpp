@@ -58,6 +58,10 @@ void TutorialApplication::createScene(void)
     
     field = new PlayingField(mSceneMgr, sim, 100, 100);
     field->addToSimulator();
+    wall = new PlayingField(mSceneMgr, sim, 100, 100);
+    wall->getRootNode()->pitch(Ogre::Degree(90));
+    wall->getRootNode()->setPosition(0, 50, -50);
+    wall->addToSimulator();
 
     ball = new Ball(mSceneMgr, sim);
     ball->getRootNode()->setPosition(0, 50, 0);
@@ -66,8 +70,9 @@ void TutorialApplication::createScene(void)
 
     //For now, it's positioning will match that of the camera
     paddle = new Paddle(mSceneMgr, sim, 25, 25);
-    paddle->getRootNode()->setPosition(20, 25, 50);
+    paddle->getRootNode()->setPosition(0, 25, 50);
     paddle->addToSimulator();
+    paddle->updateTransform();
 }
 //---------------------------------------------------------------------------
 void TutorialApplication::createCamera(void)
@@ -93,6 +98,8 @@ void TutorialApplication::createViewports(void)
 //Keyboard input
 bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
 {
+    static bool mouseDownLastFrame = false;
+    static bool mouseUpLastFrame = false;
     //Camera controls
     //For now, also move paddle
     Ogre::Vector3 dirVec = mCamera->getPosition();
@@ -115,7 +122,8 @@ bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
         paddle->getRootNode()->yaw(Ogre::Degree(-mRotate), Ogre::Node::TS_WORLD);
     }
     mCamNode->translate(dirVec, Ogre::Node::TS_LOCAL);
-    paddle->getRootNode()->translate(dirVec, Ogre::Node::TS_LOCAL);
+    paddle->getRootNode()->translate(Ogre::Vector3(dirVec.x, 0, -dirVec.y), Ogre::Node::TS_LOCAL);
+    paddle->updateTransform();
     return true;
 }
 
@@ -127,6 +135,23 @@ bool TutorialApplication::mouseMoved(const OIS::MouseEvent& me) {
     //     std::cout << "xrel positive\n";
     return true;
 }
+
+bool TutorialApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+{
+    if(id == OIS::MB_Left){
+        paddle->getRootNode()->pitch(Ogre::Degree(-30));
+    }
+    return BaseApplication::mousePressed(arg, id);
+}
+
+bool TutorialApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+{
+    if(id == OIS::MB_Left){
+        paddle->getRootNode()->pitch(Ogre::Degree(30));
+    }
+    return BaseApplication::mousePressed(arg, id);
+}
+
 //---------------------------------------------------------------------------
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
@@ -145,7 +170,8 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(!processUnbufferedInput(evt))
         return false;
-
+    if(ball->getRootNode()->getPosition().y < -10)
+        ball->reset();
     return true;
 }
 
