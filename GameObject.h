@@ -4,6 +4,7 @@
 #include <Ogre.h>
 #include <btBulletDynamicsCommon.h>
 #include "OgreMotionState.h"
+#include "BulletContactCallback.h"
 
 
 class Simulator;
@@ -24,6 +25,7 @@ class GameObject
 		OgreMotionState* motionState;
 		Ogre::Real restitution;
 		Ogre::Real friction;
+		BulletContactCallback* callback;
 
 	public:
 		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim);

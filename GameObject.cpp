@@ -1,5 +1,3 @@
-// #include <OgreEntity.h>
-// #include <OgreSceneManager.h>
 #include "GameObject.h"
 #include "Simulator.h"
 #include <iostream>
@@ -15,6 +13,8 @@ GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim)
 	friction = 0;
 	inertia.setZero();
 	tr.setIdentity();
+
+	callback = NULL;
 }
 
 void GameObject::updateTransform(){
@@ -35,6 +35,11 @@ void GameObject::addToSimulator(){
 	body = new btRigidBody(rbInfo);
 	body->setRestitution(restitution);
 	body->setFriction(friction);
+	body->setUserPointer(this);
+
+	CollisionContext* context = new CollisionContext();
+	callback = new BulletContactCallback(*body, *context);
+
 	simulator->addObject(this);
 }
 

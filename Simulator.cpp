@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Simulator.h"
+#include "BulletContactCallback.h"
 
 Simulator::Simulator()
 {

@@ -1,4 +1,4 @@
-noinst_HEADERS = BaseApplication.h TutorialApplication.h Simulator.h GameObject.h Ball.h PlayingField.h Paddle.h
+noinst_HEADERS = BaseApplication.h TutorialApplication.h Simulator.h BulletContactCallback.h GameObject.h Ball.h PlayingField.h Paddle.h
 
 bin_PROGRAMS = assignment2
 assignment2_CPPFLAGS = -I$(top_srcdir)
