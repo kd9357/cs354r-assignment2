@@ -1040,7 +1040,7 @@ assignment2-Simulator.o: Simulator.cpp /usr/include/stdc-predef.h \
  /usr/include/bullet/BulletDynamics/Vehicle/btWheelInfo.h \
  /usr/include/bullet/BulletDynamics/Dynamics/btActionInterface.h \
  /usr/include/bullet/BulletDynamics/Dynamics/btRigidBody.h GameObject.h \
- OgreMotionState.h
+ OgreMotionState.h BulletContactCallback.h
 
 /usr/include/stdc-predef.h:
 
@@ -3419,3 +3419,5 @@ Simulator.h:
 GameObject.h:
 
 OgreMotionState.h:
+
+BulletContactCallback.h:

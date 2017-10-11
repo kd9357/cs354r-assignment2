@@ -103,6 +103,8 @@ bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
     //Camera controls
     //For now, also move paddle
     Ogre::Vector3 dirVec = mCamera->getPosition();
+    if(mKeyboard->isKeyDown(OIS::KC_R))
+        ball->reset();
     if(mKeyboard->isKeyDown(OIS::KC_W))
         dirVec.y += mMove;
     if(mKeyboard->isKeyDown(OIS::KC_S))

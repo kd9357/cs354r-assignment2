@@ -1,8 +1,7 @@
-assignment2-GameObject.o: GameObject.cpp /usr/include/stdc-predef.h \
- GameObject.h /usr/include/OGRE/Ogre.h \
- /usr/include/OGRE/OgrePrerequisites.h /usr/include/OGRE/OgrePlatform.h \
- /usr/include/OGRE/OgreConfig.h /usr/include/OGRE/OgreBuildSettings.h \
- /usr/include/c++/5/string \
+assignment2-Paddle.o: Paddle.cpp /usr/include/stdc-predef.h Paddle.h \
+ /usr/include/OGRE/Ogre.h /usr/include/OGRE/OgrePrerequisites.h \
+ /usr/include/OGRE/OgrePlatform.h /usr/include/OGRE/OgreConfig.h \
+ /usr/include/OGRE/OgreBuildSettings.h /usr/include/c++/5/string \
  /usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/5/bits/os_defines.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -913,7 +912,7 @@ assignment2-GameObject.o: GameObject.cpp /usr/include/stdc-predef.h \
  /usr/include/OGRE/OgrePolygon.h /usr/include/OGRE/OgreConvexBody.h \
  /usr/include/OGRE/OgreShadowCameraSetupLiSPSM.h \
  /usr/include/OGRE/OgreShadowCameraSetupPlaneOptimal.h \
- /usr/include/OGRE/OgreShadowCameraSetupPSSM.h \
+ /usr/include/OGRE/OgreShadowCameraSetupPSSM.h GameObject.h \
  /usr/include/bullet/btBulletDynamicsCommon.h \
  /usr/include/bullet/btBulletCollisionCommon.h \
  /usr/include/bullet/BulletCollision/CollisionDispatch/btCollisionWorld.h \
@@ -1044,11 +1043,11 @@ assignment2-GameObject.o: GameObject.cpp /usr/include/stdc-predef.h \
  /usr/include/bullet/BulletDynamics/Vehicle/btWheelInfo.h \
  /usr/include/bullet/BulletDynamics/Dynamics/btActionInterface.h \
  /usr/include/bullet/BulletDynamics/Dynamics/btRigidBody.h \
- OgreMotionState.h BulletContactCallback.h Simulator.h
+ OgreMotionState.h BulletContactCallback.h
 
 /usr/include/stdc-predef.h:
 
-GameObject.h:
+Paddle.h:
 
 /usr/include/OGRE/Ogre.h:
 
@@ -3158,6 +3157,8 @@ GameObject.h:
 
 /usr/include/OGRE/OgreShadowCameraSetupPSSM.h:
 
+GameObject.h:
+
 /usr/include/bullet/btBulletDynamicsCommon.h:
 
 /usr/include/bullet/btBulletCollisionCommon.h:
@@ -3423,5 +3424,3 @@ GameObject.h:
 OgreMotionState.h:
 
 BulletContactCallback.h:
-
-Simulator.h:
