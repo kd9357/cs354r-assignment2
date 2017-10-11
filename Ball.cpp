@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "Simulator.h"
+#include <iostream>
 
 Ball::Ball(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n) 
 	: GameObject(scnMgr, sim, n)
@@ -23,6 +24,9 @@ void Ball::update(float elapsedTime) {
 		&& (lastTime > 0.5 || (context->lastBody != context->body && lastTime > 0.1))) {
 		//Handle the hit
 		std::cout << "ball hit" << std::endl;
+		if(sounds == NULL)
+			std::cout << "sounds is null" << std::endl;
+		Mix_PlayChannel(-1, sounds->bounce, 0);
 		lastTime = 0.0f;
 	}
 	context->hit = false;

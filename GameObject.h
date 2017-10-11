@@ -5,6 +5,7 @@
 #include <btBulletDynamicsCommon.h>
 #include "OgreMotionState.h"
 #include "BulletContactCallback.h"
+#include "Sound.h"
 
 
 class Simulator;
@@ -27,6 +28,7 @@ class GameObject
 		Ogre::Real friction;
 		CollisionContext* context;
 		BulletContactCallback* callback;
+		Sound* sounds;
 
 	public:
 		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n);

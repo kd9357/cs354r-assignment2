@@ -110,10 +110,11 @@ am_assignment2_OBJECTS = assignment2-BaseApplication.$(OBJEXT) \
 	assignment2-Simulator.$(OBJEXT) \
 	assignment2-GameObject.$(OBJEXT) assignment2-Ball.$(OBJEXT) \
 	assignment2-PlayingField.$(OBJEXT) \
-	assignment2-Paddle.$(OBJEXT)
+	assignment2-Paddle.$(OBJEXT) assignment2-Sound.$(OBJEXT)
 assignment2_OBJECTS = $(am_assignment2_OBJECTS)
 am__DEPENDENCIES_1 =
 assignment2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -217,8 +218,8 @@ BULLET_CFLAGS =
 BULLET_LIBS = 
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CEGUI_0_OGRE_CFLAGS = 
-CEGUI_0_OGRE_LIBS = 
+CEGUI_0_OGRE_CFLAGS = -pthread -I/lusr/opt/cegui-0.8.7/include/cegui-0 -I/usr/include/OGRE
+CEGUI_0_OGRE_LIBS = -L/lusr/opt/cegui-0.8.7/lib -lCEGUIOgreRenderer-0 -lOgreMain -lpthread -lCEGUIBase-0
 CEGUI_CFLAGS = -pthread -I/lusr/opt/cegui-0.8.4/include/cegui-0 -I/usr/include/OGRE
 CEGUI_LIBS = -L/lusr/opt/cegui-0.8.4/lib -lCEGUIOgreRenderer-0 -lOgreMain -lpthread -lCEGUIBase-0
 CFLAGS = -g -O2
@@ -280,6 +281,10 @@ PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
 RANLIB = ranlib
+SDLMIXER_CFLAGS = -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
+SDLMIXER_LIBS = -L/usr/lib/x86_64-linux-gnu -lSDL -lSDL_mixer
+SDL_CFLAGS = 
+SDL_LIBS = 
 SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
@@ -334,6 +339,8 @@ program_transform_name = s,x,x,
 psdir = ${docdir}
 runstatedir = ${localstatedir}/run
 sbindir = ${exec_prefix}/sbin
+sdl_CFLAGS = -D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL
+sdl_LIBS = -lSDL
 sharedstatedir = ${prefix}/com
 srcdir = .
 sysconfdir = ${prefix}/etc
@@ -341,11 +348,11 @@ target_alias =
 top_build_prefix = 
 top_builddir = .
 top_srcdir = .
-noinst_HEADERS = BaseApplication.h TutorialApplication.h Simulator.h BulletContactCallback.h GameObject.h Ball.h PlayingField.h Paddle.h
+noinst_HEADERS = BaseApplication.h TutorialApplication.h Simulator.h BulletContactCallback.h GameObject.h Ball.h PlayingField.h Paddle.h Sound.h
 assignment2_CPPFLAGS = -I$(top_srcdir)
-assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Simulator.cpp GameObject.cpp Ball.cpp PlayingField.cpp Paddle.cpp
-assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(CEGUI_CFLAGS)
-assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(CEGUI_LIBS)
+assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Simulator.cpp GameObject.cpp Ball.cpp PlayingField.cpp Paddle.cpp Sound.cpp
+assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(sdl_CFLAGS) $(SDLMIXER_CFLAGS) $(CEGUI_CFLAGS)
+assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(sdl_LIBS) $(SDLMIXER_LIBS) $(CEGUI_LIBS)
 assignment2_LDFLAGS = -lOgreOverlay -lboost_system
 EXTRA_DIST = buildit makeit
 AUTOMAKE_OPTIONS = foreign
@@ -468,6 +475,7 @@ include ./$(DEPDIR)/assignment2-GameObject.Po
 include ./$(DEPDIR)/assignment2-Paddle.Po
 include ./$(DEPDIR)/assignment2-PlayingField.Po
 include ./$(DEPDIR)/assignment2-Simulator.Po
+include ./$(DEPDIR)/assignment2-Sound.Po
 include ./$(DEPDIR)/assignment2-TutorialApplication.Po
 
 .cpp.o:
@@ -588,6 +596,20 @@ assignment2-Paddle.obj: Paddle.cpp
 #	$(AM_V_CXX)source='Paddle.cpp' object='assignment2-Paddle.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Paddle.obj `if test -f 'Paddle.cpp'; then $(CYGPATH_W) 'Paddle.cpp'; else $(CYGPATH_W) '$(srcdir)/Paddle.cpp'; fi`
+
+assignment2-Sound.o: Sound.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Sound.o -MD -MP -MF $(DEPDIR)/assignment2-Sound.Tpo -c -o assignment2-Sound.o `test -f 'Sound.cpp' || echo '$(srcdir)/'`Sound.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Sound.Tpo $(DEPDIR)/assignment2-Sound.Po
+#	$(AM_V_CXX)source='Sound.cpp' object='assignment2-Sound.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Sound.o `test -f 'Sound.cpp' || echo '$(srcdir)/'`Sound.cpp
+
+assignment2-Sound.obj: Sound.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -MT assignment2-Sound.obj -MD -MP -MF $(DEPDIR)/assignment2-Sound.Tpo -c -o assignment2-Sound.obj `if test -f 'Sound.cpp'; then $(CYGPATH_W) 'Sound.cpp'; else $(CYGPATH_W) '$(srcdir)/Sound.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/assignment2-Sound.Tpo $(DEPDIR)/assignment2-Sound.Po
+#	$(AM_V_CXX)source='Sound.cpp' object='assignment2-Sound.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(assignment2_CPPFLAGS) $(CPPFLAGS) $(assignment2_CXXFLAGS) $(CXXFLAGS) -c -o assignment2-Sound.obj `if test -f 'Sound.cpp'; then $(CYGPATH_W) 'Sound.cpp'; else $(CYGPATH_W) '$(srcdir)/Sound.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

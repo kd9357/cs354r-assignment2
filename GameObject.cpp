@@ -16,6 +16,7 @@ GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String 
 	tr.setIdentity();
 	context = NULL;
 	callback = NULL;
+	sounds = new Sound();
 }
 
 void GameObject::updateTransform(){
