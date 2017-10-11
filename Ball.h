@@ -8,9 +8,10 @@ class Ball : public GameObject
 {
 	protected:
 		Ogre::Real bRadius;
+		float lastTime;
 	public:
-		Ball(Ogre::SceneManager* scnMgr, Simulator* sim);
+		Ball(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n);
 		~Ball();
-		// Ogre::SceneNode* getNode() { return rootNode; }
-    void reset();
+		void update(float elapsedTime);
+    	void reset();
 };

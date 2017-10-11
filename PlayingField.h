@@ -11,6 +11,6 @@ class PlayingField : public GameObject
 		// float length;
 		// float width;
 	public:
-		PlayingField(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::Real width, Ogre::Real height);
+		PlayingField(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::Real width, Ogre::Real height, Ogre::String n);
 		~PlayingField();
 };

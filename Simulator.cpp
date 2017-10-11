@@ -34,5 +34,7 @@ btDiscreteDynamicsWorld* Simulator::getDynamicsWorld()
 void Simulator::stepSimulation(const Ogre::Real elapsedTime, int maxSubSteps, const Ogre::Real fixedTimestep)
 {
 	getDynamicsWorld()->stepSimulation(elapsedTime, maxSubSteps, fixedTimestep);
-
+	for (unsigned int i = 0; i < objList.size(); i++){
+		objList[i]->update(elapsedTime);
+	}
 }

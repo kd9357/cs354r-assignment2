@@ -25,15 +25,18 @@ class GameObject
 		OgreMotionState* motionState;
 		Ogre::Real restitution;
 		Ogre::Real friction;
+		CollisionContext* context;
 		BulletContactCallback* callback;
 
 	public:
-		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim);
+		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n);
 		btRigidBody* getBody(){return body;}
 		Ogre::SceneNode* getRootNode(){return rootNode;}
+		Ogre::String getName(){return name;}
 		void updateTransform();
 		void addToSimulator();
 		void setVelocity(Ogre::Real x, Ogre::Real y, Ogre::Real z);
+		virtual void update(float elapsedTime);
 };
 
 #endif

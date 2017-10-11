@@ -871,6 +871,10 @@ fi
 
 echo 'BEGIN {' >"$ac_tmp/subs1.awk" &&
 cat >>"$ac_tmp/subs1.awk" <<\_ACAWK &&
+S["CEGUI_LIBS"]=""
+S["CEGUI_CFLAGS"]=""
+S["CEGUI_0_OGRE_LIBS"]=""
+S["CEGUI_0_OGRE_CFLAGS"]=""
 S["am__EXEEXT_FALSE"]=""
 S["am__EXEEXT_TRUE"]="#"
 S["LTLIBOBJS"]=""

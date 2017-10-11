@@ -3,8 +3,8 @@
 #include "PlayingField.h"
 
 PlayingField::PlayingField(Ogre::SceneManager* scnMgr, Simulator* sim, 
-													 Ogre::Real width, Ogre::Real height) 
-												 	: GameObject(scnMgr, sim)
+													 Ogre::Real width, Ogre::Real height, Ogre::String n) 
+												 	: GameObject(scnMgr, sim, n)
 {
 	// Creating reusable plane entity to create walls of the room
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);

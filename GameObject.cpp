@@ -2,8 +2,9 @@
 #include "Simulator.h"
 #include <iostream>
 
-GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim)
+GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String name)
 {
+	name = name;
 	scnMgr = scnMgr;
 	simulator = sim;
 	shape = NULL;
@@ -13,7 +14,7 @@ GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim)
 	friction = 0;
 	inertia.setZero();
 	tr.setIdentity();
-
+	context = NULL;
 	callback = NULL;
 }
 
@@ -37,7 +38,7 @@ void GameObject::addToSimulator(){
 	body->setFriction(friction);
 	body->setUserPointer(this);
 
-	CollisionContext* context = new CollisionContext();
+	context = new CollisionContext();
 	callback = new BulletContactCallback(*body, *context);
 
 	simulator->addObject(this);
@@ -45,4 +46,8 @@ void GameObject::addToSimulator(){
 
 void GameObject::setVelocity(Ogre::Real x, Ogre::Real y, Ogre::Real z) {
 	body->setLinearVelocity(btVector3(x, y, z));
+}
+
+void GameObject::update(float elapsedTime){
+
 }

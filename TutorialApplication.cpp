@@ -56,20 +56,20 @@ void TutorialApplication::createScene(void)
     //Physics setup
     sim = new Simulator();
     
-    field = new PlayingField(mSceneMgr, sim, 100, 100);
+    field = new PlayingField(mSceneMgr, sim, 100, 100, Ogre::String("field"));
     field->addToSimulator();
-    wall = new PlayingField(mSceneMgr, sim, 100, 100);
+    wall = new PlayingField(mSceneMgr, sim, 100, 100, Ogre::String("wall"));
     wall->getRootNode()->pitch(Ogre::Degree(90));
     wall->getRootNode()->setPosition(0, 50, -50);
     wall->addToSimulator();
 
-    ball = new Ball(mSceneMgr, sim);
+    ball = new Ball(mSceneMgr, sim, Ogre::String("ball"));
     ball->getRootNode()->setPosition(0, 50, 0);
     ball->addToSimulator();
     ball->setVelocity(0, 0, 50);
 
     //For now, it's positioning will match that of the camera
-    paddle = new Paddle(mSceneMgr, sim, 25, 25);
+    paddle = new Paddle(mSceneMgr, sim, 25, 25, Ogre::String("paddle"));
     paddle->getRootNode()->setPosition(0, 25, 50);
     paddle->addToSimulator();
     paddle->updateTransform();
