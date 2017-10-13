@@ -23,7 +23,8 @@ http://www.ogre3d.org/wiki/
 #include "PlayingField.h"
 #include "Ball.h"
 #include "Paddle.h"
-
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/RendererModules/Ogre/Renderer.h>
 
 //---------------------------------------------------------------------------
 
@@ -45,6 +46,9 @@ protected:
     virtual bool processUnbufferedInput(const Ogre::FrameEvent& fe);
     // Ogre::FrameListener
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    bool quit(const CEGUI::EventArgs &e);
+
+    CEGUI::OgreRenderer* mRenderer;
 
     //Simulator and Game objects
     Simulator * sim;

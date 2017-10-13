@@ -115,7 +115,8 @@ assignment2_OBJECTS = $(am_assignment2_OBJECTS)
 am__DEPENDENCIES_1 =
 assignment2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -220,8 +221,10 @@ CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CEGUI_0_OGRE_CFLAGS = @CEGUI_0_OGRE_CFLAGS@
 CEGUI_0_OGRE_LIBS = @CEGUI_0_OGRE_LIBS@
-CEGUI_CFLAGS = -pthread -I/lusr/opt/cegui-0.8.4/include/cegui-0 -I/usr/include/OGRE
-CEGUI_LIBS = -L/lusr/opt/cegui-0.8.4/lib -lCEGUIOgreRenderer-0 -lOgreMain -lpthread -lCEGUIBase-0
+CEGUI_CFLAGS = @CEGUI_CFLAGS@
+CEGUI_LIBS = @CEGUI_LIBS@
+CEGUI_OGRE_CFLAGS = @CEGUI_OGRE_CFLAGS@
+CEGUI_OGRE_LIBS = @CEGUI_OGRE_LIBS@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -349,11 +352,13 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_HEADERS = BaseApplication.h TutorialApplication.h Simulator.h BulletContactCallback.h GameObject.h Ball.h PlayingField.h Paddle.h Sound.h
+CEGUIOGRE_CFLAGS = -pthread -I/lusr/opt/cegui-0.8.7/include/cegui-0 -I/usr/include/OGRE
+CEGUIOGRE_LIBS = -L/lusr/opt/cegui-0.8.7/lib -lCEGUIOgreRenderer-0 -lOgreMain -lpthread -lCEGUIBase-0 
 assignment2_CPPFLAGS = -I$(top_srcdir)
 assignment2_SOURCES = BaseApplication.cpp TutorialApplication.cpp Simulator.cpp GameObject.cpp Ball.cpp PlayingField.cpp Paddle.cpp Sound.cpp
-assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(sdl_CFLAGS) $(SDLMIXER_CFLAGS) $(CEGUI_CFLAGS)
-assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(sdl_LIBS) $(SDLMIXER_LIBS) $(CEGUI_LIBS)
-assignment2_LDFLAGS = -lOgreOverlay -lboost_system
+assignment2_CXXFLAGS = $(OGRE_CFLAGS) $(OIS_CFLAGS) $(bullet_CFLAGS) $(sdl_CFLAGS) $(SDLMIXER_CFLAGS) $(CEGUI_CFLAGS) $(CEGUIOGRE_CFLAGS)
+assignment2_LDADD = $(OGRE_LIBS) $(OIS_LIBS) $(bullet_LIBS) $(sdl_LIBS) $(SDLMIXER_LIBS) $(CEGUI_LIBS) $(CEGUIOGRE_LIBS)
+assignment2_LDFLAGS = -lOgreOverlay -lboost_system -R/lusr/opt/cegui-0.8.7
 EXTRA_DIST = buildit makeit
 AUTOMAKE_OPTIONS = foreign
 all: config.h

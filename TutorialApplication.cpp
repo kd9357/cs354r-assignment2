@@ -17,7 +17,6 @@ http://www.ogre3d.org/wiki/
 #include <iostream>
 #include "TutorialApplication.h"
 
-
 // Ball* ball;
 // Simulator* sim;
 
@@ -33,6 +32,15 @@ TutorialApplication::~TutorialApplication(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+    mRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
+    CEGUI::ImageManager::setImagesetDefaultResourceGroup("Imagesets");
+    CEGUI::Font::setDefaultResourceGroup("Fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+    
+    CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     // Create your scene here :)
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
@@ -165,6 +173,8 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
     mKeyboard->capture();
     mMouse->capture();
 
+    CEGUI::System::getSingleton().injectTimePulse(evt.timeSinceLastFrame);
+
     if(sim)
     {
         sim->stepSimulation(evt.timeSinceLastFrame);
@@ -174,6 +184,11 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         return false;
     if(ball->getRootNode()->getPosition().y < -10)
         ball->reset();
+    return true;
+}
+
+bool TutorialApplication::quit(const CEGUI::EventArgs &e)
+{
     return true;
 }
 
