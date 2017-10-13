@@ -33,6 +33,7 @@ TutorialApplication::~TutorialApplication(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+    score = 0;
     // Create your scene here :)
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
     mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
@@ -58,18 +59,25 @@ void TutorialApplication::createScene(void)
     
     field = new PlayingField(mSceneMgr, sim, 100, 100, Ogre::String("field"));
     field->addToSimulator();
+
+    // bounds = new PlayingField(mSceneMgr, sim, 10000, 10000, Ogre::String("bounds"));
+    // bounds->setMaterial("Examples/BeachStones");
+    // bounds->getRootNode()->setPosition(0, -10, 0);
+    // bounds->addToSimulator();
+
     wall = new PlayingField(mSceneMgr, sim, 100, 100, Ogre::String("wall"));
     wall->getRootNode()->pitch(Ogre::Degree(90));
     wall->getRootNode()->setPosition(0, 50, -50);
     wall->addToSimulator();
 
-    ball = new Ball(mSceneMgr, sim, Ogre::String("ball"));
-    ball->getRootNode()->setPosition(0, 50, 0);
+    ball = new Ball(mSceneMgr, sim, score, Ogre::String("ball"));
+    //ball->getRootNode()->setPosition(0, 50, 0);
     ball->addToSimulator();
-    ball->setVelocity(0, 0, 50);
+    ball->reset();
+    // ball->setVelocity(0, 0, 50);
 
     //For now, it's positioning will match that of the camera
-    paddle = new Paddle(mSceneMgr, sim, 25, 25, Ogre::String("paddle"));
+    paddle = new Paddle(mSceneMgr, sim, 10, Ogre::String("paddle"));
     paddle->getRootNode()->setPosition(0, 25, 50);
     paddle->addToSimulator();
     paddle->updateTransform();
@@ -83,7 +91,7 @@ void TutorialApplication::createCamera(void)
     mCamNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("CamNode");
     mCamNode->setPosition(Ogre::Vector3(0, 25, 150));
     mCamNode->attachObject(mCamera);
-    mMove = 0.1;
+    mMove = 0.15;
     mRotate = 0.05;
 }
 //---------------------------------------------------------------------------
@@ -113,18 +121,9 @@ bool TutorialApplication::processUnbufferedInput(const Ogre::FrameEvent& fe)
         dirVec.x -= mMove;
     if(mKeyboard->isKeyDown(OIS::KC_D))
         dirVec.x += mMove;
-    if(mKeyboard->isKeyDown(OIS::KC_Q))
-    {
-        mCamNode->yaw(Ogre::Degree(mRotate), Ogre::Node::TS_WORLD);
-        paddle->getRootNode()->yaw(Ogre::Degree(mRotate), Ogre::Node::TS_WORLD);
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_E))
-    {
-        mCamNode->yaw(Ogre::Degree(-mRotate), Ogre::Node::TS_WORLD);
-        paddle->getRootNode()->yaw(Ogre::Degree(-mRotate), Ogre::Node::TS_WORLD);
-    }
     mCamNode->translate(dirVec, Ogre::Node::TS_LOCAL);
-    paddle->getRootNode()->translate(Ogre::Vector3(dirVec.x, 0, -dirVec.y), Ogre::Node::TS_LOCAL);
+    paddle->getRootNode()->translate(Ogre::Vector3(dirVec.x, 0, 0), Ogre::Node::TS_WORLD);
+    paddle->getRootNode()->translate(Ogre::Vector3(0, 0, -dirVec.y), Ogre::Node::TS_LOCAL);
     paddle->updateTransform();
     return true;
 }
@@ -142,6 +141,7 @@ bool TutorialApplication::mousePressed( const OIS::MouseEvent &arg, OIS::MouseBu
 {
     if(id == OIS::MB_Left){
         paddle->getRootNode()->pitch(Ogre::Degree(-30));
+        paddle->swing();
     }
     return BaseApplication::mousePressed(arg, id);
 }
@@ -154,6 +154,33 @@ bool TutorialApplication::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseB
     return BaseApplication::mousePressed(arg, id);
 }
 
+bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg)
+{
+    if(arg.key == OIS::KC_Q && !pressed){
+        paddle->getRootNode()->yaw(Ogre::Degree(20), Ogre::Node::TS_WORLD);
+        pressed = true;
+    }
+    else if(arg.key == OIS::KC_E && !pressed) {
+        paddle->getRootNode()->yaw(Ogre::Degree(-20), Ogre::Node::TS_WORLD);
+        pressed = true;
+    }
+    return BaseApplication::keyPressed(arg);
+}
+
+bool TutorialApplication::keyReleased( const OIS::KeyEvent &arg)
+{
+    bool temp = pressed;
+    if(arg.key == OIS::KC_Q){
+        paddle->getRootNode()->yaw(Ogre::Degree(-20), Ogre::Node::TS_WORLD);
+        pressed = false;
+    }
+    else if(arg.key == OIS::KC_E) {
+        paddle->getRootNode()->yaw(Ogre::Degree(20), Ogre::Node::TS_WORLD);
+        pressed = false;
+    }
+
+    return BaseApplication::keyPressed(arg);
+}
 //---------------------------------------------------------------------------
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {

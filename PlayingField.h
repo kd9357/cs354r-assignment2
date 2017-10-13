@@ -13,4 +13,6 @@ class PlayingField : public GameObject
 	public:
 		PlayingField(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::Real width, Ogre::Real height, Ogre::String n);
 		~PlayingField();
+
+    void setMaterial(Ogre::String material);
 };

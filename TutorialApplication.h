@@ -43,12 +43,15 @@ protected:
     virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
     // Ogre::KeyListener
     virtual bool processUnbufferedInput(const Ogre::FrameEvent& fe);
+    virtual bool keyPressed( const OIS::KeyEvent &arg);
+    virtual bool keyReleased( const OIS::KeyEvent &arg);
     // Ogre::FrameListener
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
     //Simulator and Game objects
     Simulator * sim;
     PlayingField * field;
+    PlayingField * bounds;
     PlayingField * wall;
     Ball * ball;
     Paddle * paddle;
@@ -57,6 +60,9 @@ protected:
     Ogre::Vector3 mDirection;
     Ogre::Real mMove;
     Ogre::Real mRotate;
+
+    bool pressed = false;
+    int score;
 };
 
 //---------------------------------------------------------------------------

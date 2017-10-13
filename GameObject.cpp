@@ -2,9 +2,9 @@
 #include "Simulator.h"
 #include <iostream>
 
-GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String name)
+GameObject::GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n)
 {
-	name = name;
+	name = n;
 	scnMgr = scnMgr;
 	simulator = sim;
 	shape = NULL;

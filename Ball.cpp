@@ -2,7 +2,7 @@
 #include "Simulator.h"
 #include <iostream>
 
-Ball::Ball(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n) 
+Ball::Ball(Ogre::SceneManager* scnMgr, Simulator* sim, int& s, Ogre::String n) 
 	: GameObject(scnMgr, sim, n)
 {
 	Ogre::Entity* ball = scnMgr->createEntity("Sphere", "sphere.mesh");
@@ -14,6 +14,7 @@ Ball::Ball(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n)
 	bRadius = 5.0f;
 	shape = new btSphereShape(bRadius);
 	mass = 10;
+	score = s;
 }
 
 //Specific game object update routine
@@ -21,12 +22,22 @@ void Ball::update(float elapsedTime) {
 	lastTime += elapsedTime;
 	simulator->getDynamicsWorld()->contactTest(body, *callback);
 	if (context->hit && (context->velNorm > 1.0 || context->velNorm < -1.0) 
-		&& (lastTime > 0.5 || (context->lastBody != context->body && lastTime > 0.1))) {
+		&& (lastTime > 0.1 || (context->lastBody != context->body && lastTime > 0.05))) {
 		//Handle the hit
-		std::cout << "ball hit" << std::endl;
-		if(sounds == NULL)
-			std::cout << "sounds is null" << std::endl;
-		Mix_PlayChannel(-1, sounds->bounce, 0);
+		Ogre::String objName = callback->ctxt.theObject->getName();
+		if(objName =="wall")
+		{
+			++score;
+			std::cout << "score: " << score <<"\n";
+			Mix_PlayChannel(-1, sounds->score, 0);
+		}
+		else if(objName == "bounds")
+		{
+			//lose sound
+			reset();
+		}
+		else 
+			Mix_PlayChannel(-1, sounds->bounce, 0);
 		lastTime = 0.0f;
 	}
 	context->hit = false;
@@ -34,7 +45,11 @@ void Ball::update(float elapsedTime) {
 
 void Ball::reset()
 {
+	//Update score
+	score = 0;
 	rootNode->setPosition(0, 50, 0);
-	setVelocity(0, 0, 50);
+	Ogre::Real x = Ogre::Math::RangeRandom(-50, 50);
+	Ogre::Real y = Ogre::Math::RangeRandom(-10, 10);
+	setVelocity(x, y, 50);
 	updateTransform();
 }

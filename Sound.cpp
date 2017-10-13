@@ -14,7 +14,7 @@ Sound::Sound()
 		success = false;
 	}
 
-	score = Mix_LoadWAV("assets/Whoosh.mp3");
-	whoosh = Mix_LoadWAV("assets/Whoosh.mp3");
-	bounce = Mix_LoadWAV("assets/bounce.wav");
+	score = Mix_LoadWAV("assets/coins-1.wav");
+	whoosh = Mix_LoadWAV("assets/Woosh.wav");
+	bounce = Mix_LoadWAV("assets/8-bit-bounce.wav");
 }
