@@ -15,11 +15,13 @@ http://www.ogre3d.org/wiki/
 -----------------------------------------------------------------------------
 */
 #include <iostream>
+#include <string>
 #include "TutorialApplication.h"
 
 
 // Ball* ball;
 // Simulator* sim;
+
 
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
@@ -33,6 +35,16 @@ TutorialApplication::~TutorialApplication(void)
 //---------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
+    mRenderer = &CEGUI::OgreRenderer::bootstrapSystem();
+    CEGUI::ImageManager::setImagesetDefaultResourceGroup("Imagesets");
+    CEGUI::Font::setDefaultResourceGroup("Fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+    
+    CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+
     score = 0;
     // Create your scene here :)
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
@@ -70,7 +82,7 @@ void TutorialApplication::createScene(void)
     wall->getRootNode()->setPosition(0, 50, -50);
     wall->addToSimulator();
 
-    ball = new Ball(mSceneMgr, sim, score, Ogre::String("ball"));
+    ball = new Ball(mSceneMgr, sim, &score, Ogre::String("ball"));
     //ball->getRootNode()->setPosition(0, 50, 0);
     ball->addToSimulator();
     ball->reset();
@@ -81,6 +93,16 @@ void TutorialApplication::createScene(void)
     paddle->getRootNode()->setPosition(0, 25, 50);
     paddle->addToSimulator();
     paddle->updateTransform();
+
+    CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+    CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUISheet");
+
+    scoreLabel = wmgr.createWindow("TaharezLook/Label", "ScoreLabel");
+    scoreLabel->setText("0");
+    scoreLabel->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+
+    sheet->addChild(scoreLabel);
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
 }
 //---------------------------------------------------------------------------
 void TutorialApplication::createCamera(void)
@@ -164,6 +186,9 @@ bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg)
         paddle->getRootNode()->yaw(Ogre::Degree(-20), Ogre::Node::TS_WORLD);
         pressed = true;
     }
+    else if(arg.key == OIS::KC_M && !pressed) {
+        
+    }
     return BaseApplication::keyPressed(arg);
 }
 
@@ -201,6 +226,13 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
         return false;
     if(ball->getRootNode()->getPosition().y < -10)
         ball->reset();
+
+    std::ostringstream ss;
+    ss << "Score: " << score;
+
+    //CEGUI::Window::getChild("ScoreLabel")->setText(ss.str());
+    scoreLabel->setText(ss.str());
+    std::cout << "score in tutapp: " << score << std::endl;
     return true;
 }
 

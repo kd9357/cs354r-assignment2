@@ -2,7 +2,7 @@
 #include "Simulator.h"
 #include <iostream>
 
-Ball::Ball(Ogre::SceneManager* scnMgr, Simulator* sim, int& s, Ogre::String n) 
+Ball::Ball(Ogre::SceneManager* scnMgr, Simulator* sim, int* s, Ogre::String n) 
 	: GameObject(scnMgr, sim, n)
 {
 	Ogre::Entity* ball = scnMgr->createEntity("Sphere", "sphere.mesh");
@@ -27,7 +27,7 @@ void Ball::update(float elapsedTime) {
 		Ogre::String objName = callback->ctxt.theObject->getName();
 		if(objName =="wall")
 		{
-			++score;
+			++*score;
 			std::cout << "score: " << score <<"\n";
 			Mix_PlayChannel(-1, sounds->score, 0);
 		}
@@ -46,7 +46,7 @@ void Ball::update(float elapsedTime) {
 void Ball::reset()
 {
 	//Update score
-	score = 0;
+	*score = 0;
 	rootNode->setPosition(0, 50, 0);
 	Ogre::Real x = Ogre::Math::RangeRandom(-50, 50);
 	Ogre::Real y = Ogre::Math::RangeRandom(-10, 10);

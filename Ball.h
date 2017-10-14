@@ -9,9 +9,9 @@ class Ball : public GameObject
 	protected:
 		Ogre::Real bRadius;
 		float lastTime;
-    int score;
+    int* score;
 	public:
-		Ball(Ogre::SceneManager* scnMgr, Simulator* sim, int& score, Ogre::String n);
+		Ball(Ogre::SceneManager* scnMgr, Simulator* sim, int* score, Ogre::String n);
 		~Ball();
 		void update(float elapsedTime);
     	void reset();
