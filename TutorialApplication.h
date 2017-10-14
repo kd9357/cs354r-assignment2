@@ -25,7 +25,8 @@ http://www.ogre3d.org/wiki/
 #include "Paddle.h"
 #include <CEGUI/CEGUI.h>
 #include <CEGUI/RendererModules/Ogre/Renderer.h>
-
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 
 //---------------------------------------------------------------------------
@@ -67,8 +68,13 @@ protected:
     Ogre::Real mMove;
     Ogre::Real mRotate;
 
-    bool pressed = false;
+    bool pressed;
     int score;
+
+    // Music
+    Mix_Music* bgMusic;
+    int volume;
+    int musVol;
 };
 
 //---------------------------------------------------------------------------

@@ -29,6 +29,7 @@ class GameObject
 		CollisionContext* context;
 		BulletContactCallback* callback;
 		Sound* sounds;
+		int volume;
 
 	public:
 		GameObject(Ogre::SceneManager* scnMgr, Simulator* sim, Ogre::String n);
@@ -39,6 +40,7 @@ class GameObject
 		void addToSimulator();
 		void setVelocity(Ogre::Real x, Ogre::Real y, Ogre::Real z);
 		virtual void update(float elapsedTime);
+		void setVolume(int v);
 };
 
 #endif

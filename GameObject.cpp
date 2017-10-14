@@ -52,3 +52,8 @@ void GameObject::setVelocity(Ogre::Real x, Ogre::Real y, Ogre::Real z) {
 void GameObject::update(float elapsedTime){
 
 }
+
+void GameObject::setVolume(int v)
+{
+	volume = v;
+}

@@ -28,7 +28,6 @@ void Ball::update(float elapsedTime) {
 		if(objName =="wall")
 		{
 			++*score;
-			std::cout << "score: " << score <<"\n";
 			Mix_PlayChannel(-1, sounds->score, 0);
 		}
 		else if(objName == "bounds")

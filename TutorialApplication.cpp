@@ -23,6 +23,7 @@ http://www.ogre3d.org/wiki/
 // Simulator* sim;
 
 
+
 //---------------------------------------------------------------------------
 TutorialApplication::TutorialApplication(void)
 {
@@ -68,6 +69,8 @@ void TutorialApplication::createScene(void)
   
     //Physics setup
     sim = new Simulator();
+
+   
     
     field = new PlayingField(mSceneMgr, sim, 100, 100, Ogre::String("field"));
     field->addToSimulator();
@@ -93,6 +96,14 @@ void TutorialApplication::createScene(void)
     paddle->getRootNode()->setPosition(0, 25, 50);
     paddle->addToSimulator();
     paddle->updateTransform();
+
+    //Sound setup
+    volume = 10;
+    musVol = 5;
+    bgMusic = Mix_LoadMUS("assets/bgMusic.wav");
+    Mix_PlayMusic(bgMusic, -1);
+    Mix_VolumeMusic(musVol);
+    Mix_Volume(-1, volume);
 
     CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
     CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUISheet");
@@ -186,8 +197,41 @@ bool TutorialApplication::keyPressed( const OIS::KeyEvent &arg)
         paddle->getRootNode()->yaw(Ogre::Degree(-20), Ogre::Node::TS_WORLD);
         pressed = true;
     }
-    else if(arg.key == OIS::KC_M && !pressed) {
-        
+    if(arg.key == OIS::KC_M) {
+        if(volume > 0)
+            volume = 0;
+        else
+            volume = 10;
+       Mix_Volume(-1, volume);
+    }
+    if(arg.key == OIS::KC_COMMA) {
+        if(volume > 0)
+            volume -= 1;
+        std::cout << "comma" << std::endl;
+        Mix_Volume(-1, volume);
+    }
+    if(arg.key == OIS::KC_PERIOD) {
+        if(volume < 128)
+            volume += 1;
+        std::cout << "period" << std::endl;
+        Mix_Volume(-1, volume);
+    }
+    if(arg.key == OIS::KC_P) {
+        if(Mix_PausedMusic())
+            Mix_ResumeMusic();
+        else
+            Mix_PauseMusic();
+    }
+    if(arg.key == OIS::KC_LBRACKET) {
+        if(musVol > 0)
+            musVol -= 1;
+        Mix_VolumeMusic(musVol);
+
+    }
+    if(arg.key == OIS::KC_RBRACKET) {
+        if(musVol < 128)
+            musVol += 1;
+        Mix_VolumeMusic(musVol);
     }
     return BaseApplication::keyPressed(arg);
 }
@@ -232,7 +276,6 @@ bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     //CEGUI::Window::getChild("ScoreLabel")->setText(ss.str());
     scoreLabel->setText(ss.str());
-    std::cout << "score in tutapp: " << score << std::endl;
     return true;
 }
 
